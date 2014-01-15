@@ -13,37 +13,18 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
 
-public class StockDataLoaderService extends Service {
-
+public class StockDataLoaderService extends Service implements StockLoaderCallback {
     private static final boolean DEBUG = true;
     private static final String TAG = "QQQQ";
 
     private final ArrayList<StockData> mStockData = new ArrayList<StockData>();
-    private final JsonHttpLoader mHttpLoader = new JsonHttpLoader();
+    private final LoaderTask mLoader = new LoaderTask();
+    private String mParsingString;
 
     public void onCreate() {
         super.onCreate();
-        new Thread(new Runnable() {
-
-            @Override
-            public void run() {
-                // TODO Auto-generated method stub
-                ArrayList<JSONObject> data = mHttpLoader
-                        .parse("http://finance.google.com/finance/info?client=ig&q=NASDAQ:GOOG,NASDAQ:YHOO");
-                if (data.size() > 0) {
-                    for (JSONObject j : data) {
-                        try {
-                            StockData sd = new StockData(j);
-                            mStockData.add(sd);
-                        } catch (JSONException e) {
-                            showErrorMsg(e);
-                        }
-                    }
-                    dumpStockData(mStockData);
-                }
-            }
-        }).start();
-
+        mLoader.setCallback(this);
+        compositeParsingString();
     }
 
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -52,6 +33,22 @@ public class StockDataLoaderService extends Service {
 
     public void onDestroy() {
         super.onDestroy();
+        // release loader
+        if (mLoader != null) {
+            if (mLoader.isLoading()) {
+                mLoader.forceCancel();
+            }
+            mLoader.setCallback(null);
+        }
+    }
+
+    private void compositeParsingString(){
+//        mParsingString
+    }
+    
+    private void parse(String url) {
+        mLoader.setUrl("http://finance.google.com/finance/info?client=ig&q=NASDAQ:GOOG,NASDAQ:YHOO");
+        mLoader.start();
     }
 
     @Override
@@ -69,5 +66,21 @@ public class StockDataLoaderService extends Service {
         if (DEBUG)
             for (StockData s : data)
                 Log.e(TAG, s.toString());
+    }
+
+    @Override
+    public void setData(ArrayList<JSONObject> d) {
+        ArrayList<JSONObject> data = d;
+        if (data.size() > 0) {
+            for (JSONObject j : data) {
+                try {
+                    StockData sd = new StockData(j);
+                    mStockData.add(sd);
+                } catch (JSONException e) {
+                    showErrorMsg(e);
+                }
+            }
+            dumpStockData(mStockData);
+        }
     }
 }
