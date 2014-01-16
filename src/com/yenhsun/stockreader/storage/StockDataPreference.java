@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.yenhsun.stockreader.util.StockId;
 
+import android.app.backup.BackupManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -17,13 +18,16 @@ public class StockDataPreference {
 
     private SharedPreferences mPrefs;
 
-    private static final String SHARED_PREFS_FILE = "stock_data_prefs";
+    public static final String SHARED_PREFS_FILE = "stock_data_prefs";
 
     private static final String STOCK_LIST = "stock_list";
+
+    private BackupManager mBackupManager;
 
     public StockDataPreference(Context c) {
         mContext = c;
         mPrefs = mContext.getSharedPreferences(SHARED_PREFS_FILE, Context.MODE_PRIVATE);
+        mBackupManager = new BackupManager(mContext);
     }
 
     public void removeData(StockId data) {
@@ -45,6 +49,7 @@ public class StockDataPreference {
             String json = gson.toJson(data);
             editor.putString(STOCK_LIST, json);
             editor.commit();
+            mBackupManager.dataChanged();
         }
     }
 
