@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import com.yenhsun.stockreader.loader.StockDataLoaderService;
 import com.yenhsun.stockreader.storage.StockDataPreference;
 import com.yenhsun.stockreader.util.StockId;
+import com.yenhsun.stockreader.util.UrlStringComposer;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -16,7 +17,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
-public class MainActivity extends Activity{
+public class MainActivity extends Activity {
 
     private Button mBtnAdd, mBtnEdit, mBtnOk, mBtnCancel;
 

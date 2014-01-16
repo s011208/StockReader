@@ -28,6 +28,20 @@ public class StockDataPreference {
         mContext = c;
         mPrefs = mContext.getSharedPreferences(SHARED_PREFS_FILE, Context.MODE_PRIVATE);
         mBackupManager = new BackupManager(mContext);
+//        createFakeData();
+    }
+
+    private void createFakeData() {
+        ArrayList<StockId> data = new ArrayList<StockId>();
+        StockId s1 = new StockId("TPE", "2002");
+        StockId s2 = new StockId("TPE", "6226");
+        StockId s3 = new StockId("TPE", "2357");
+        StockId s4 = new StockId("TPE", "2498");
+        data.add(s1);
+        data.add(s2);
+        data.add(s3);
+        data.add(s4);
+        saveData(data);
     }
 
     public void removeData(StockId data) {

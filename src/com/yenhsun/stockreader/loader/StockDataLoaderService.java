@@ -6,7 +6,9 @@ import java.util.ArrayList;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.yenhsun.stockreader.storage.StockDataPreference;
 import com.yenhsun.stockreader.util.StockData;
+import com.yenhsun.stockreader.util.UrlStringComposer;
 
 import android.app.Service;
 import android.content.Intent;
@@ -15,19 +17,26 @@ import android.util.Log;
 
 public class StockDataLoaderService extends Service implements StockLoaderCallback {
     private static final boolean DEBUG = true;
+
     private static final String TAG = "QQQQ";
 
     private final ArrayList<StockData> mStockData = new ArrayList<StockData>();
+
     private final LoaderTask mLoader = new LoaderTask();
+
     private String mParsingString;
+
+    private StockDataPreference mStockDataPreference;
 
     public void onCreate() {
         super.onCreate();
+        mStockDataPreference = new StockDataPreference(this);
         mLoader.setCallback(this);
-        compositeParsingString();
     }
 
     public int onStartCommand(Intent intent, int flags, int startId) {
+        mParsingString = UrlStringComposer.retriveGoogleUrl(mStockDataPreference.retriveData());
+        parse(mParsingString);
         return Service.START_STICKY;
     }
 
@@ -42,12 +51,9 @@ public class StockDataLoaderService extends Service implements StockLoaderCallba
         }
     }
 
-    private void compositeParsingString(){
-//        mParsingString
-    }
-    
     private void parse(String url) {
-        mLoader.setUrl("http://finance.google.com/finance/info?client=ig&q=NASDAQ:GOOG,NASDAQ:YHOO");
+        mLoader.setUrl(url);
+        // mLoader.setUrl("http://finance.google.com/finance/info?client=ig&q=NASDAQ:GOOG,NASDAQ:YHOO");
         mLoader.start();
     }
 
