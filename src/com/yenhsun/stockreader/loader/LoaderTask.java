@@ -82,7 +82,9 @@ public class LoaderTask extends Thread {
                     Log.w(TAG, "", e);
                 }
             } else {
-                mCallback.setData(data);
+                if (mCallback != null) {
+                    mCallback.setData(data);
+                }
                 break;
             }
         }

@@ -54,6 +54,8 @@ public class MainActivity extends Activity {
     private void initStockList() {
         mStockList = (ListView)findViewById(R.id.stock_data_list);
         ArrayList<StockId> data = mStockDataPreference.retriveData();
+        if(data == null)
+            data = new  ArrayList<StockId>();
         StockListAdapter adapter = new StockListAdapter(mContext, data);
         mStockList.setAdapter(adapter);
     }
