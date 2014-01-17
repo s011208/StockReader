@@ -77,6 +77,10 @@ public class StockDataPreference {
             String json = mPrefs.getString(STOCK_LIST, "");
             rtn = (ArrayList<StockId>)gson.fromJson(json, new TypeToken<ArrayList<StockId>>() {
             }.getType());
+            if(rtn == null || rtn.size() == 0){
+                createFakeData();
+                retriveData();
+            }
             return rtn;
         }
     }
