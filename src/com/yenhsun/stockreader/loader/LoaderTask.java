@@ -82,6 +82,7 @@ public class LoaderTask extends Thread {
                     Log.w(TAG, "", e);
                 }
             } else {
+                Log.e(TAG, "send callback: " + (mCallback != null));
                 if (mCallback != null) {
                     mCallback.setData(data);
                 }

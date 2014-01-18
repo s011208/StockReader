@@ -6,12 +6,14 @@ import java.util.ArrayList;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.yenhsun.stockreader.MainActivity;
 import com.yenhsun.stockreader.storage.StockDataPreference;
 import com.yenhsun.stockreader.util.StockData;
 import com.yenhsun.stockreader.util.UrlStringComposer;
 
 import android.app.Service;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -20,9 +22,9 @@ public class StockDataLoaderService extends Service implements StockLoaderCallba
 
     private static final String TAG = "QQQQ";
 
-    private final ArrayList<StockData> mStockData = new ArrayList<StockData>();
+    private static final ArrayList<StockData> mStockData = new ArrayList<StockData>();
 
-    private final LoaderTask mLoader = new LoaderTask();
+    private LoaderTask mLoader;
 
     private String mParsingString;
 
@@ -31,12 +33,33 @@ public class StockDataLoaderService extends Service implements StockLoaderCallba
     public void onCreate() {
         super.onCreate();
         mStockDataPreference = new StockDataPreference(this);
-        mLoader.setCallback(this);
+    }
+
+    public static ArrayList<StockData> retriveStockData() {
+        synchronized (mStockData) {
+            return mStockData;
+        }
     }
 
     public int onStartCommand(Intent intent, int flags, int startId) {
         mParsingString = UrlStringComposer.retriveGoogleUrl(mStockDataPreference.retriveData());
-        parse(mParsingString);
+        new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                // TODO Auto-generated method stub
+                while (true) {
+                    parse(mParsingString);
+                    try {
+                        Thread.sleep(10000);
+                    } catch (InterruptedException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }).start();
+
         return Service.START_STICKY;
     }
 
@@ -52,7 +75,13 @@ public class StockDataLoaderService extends Service implements StockLoaderCallba
     }
 
     private void parse(String url) {
+        if (mLoader != null) {
+            // still loading
+            return;
+        }
+        mLoader = new LoaderTask();
         mLoader.setUrl(url);
+        mLoader.setCallback(this);
         // mLoader.setUrl("http://finance.google.com/finance/info?client=ig&q=NASDAQ:GOOG,NASDAQ:YHOO");
         mLoader.start();
     }
@@ -68,7 +97,7 @@ public class StockDataLoaderService extends Service implements StockLoaderCallba
             Log.e(TAG, "", e);
     }
 
-    private static final void dumpStockData(ArrayList<StockData> data) {
+    public static final void dumpStockData(ArrayList<StockData> data) {
         if (DEBUG)
             for (StockData s : data)
                 Log.e(TAG, s.toString());
@@ -76,17 +105,22 @@ public class StockDataLoaderService extends Service implements StockLoaderCallba
 
     @Override
     public void setData(ArrayList<JSONObject> d) {
-        ArrayList<JSONObject> data = d;
-        if (data.size() > 0) {
-            for (JSONObject j : data) {
-                try {
-                    StockData sd = new StockData(j);
-                    mStockData.add(sd);
-                } catch (JSONException e) {
-                    showErrorMsg(e);
+        synchronized (mStockData) {
+            mStockData.clear();
+            ArrayList<JSONObject> data = d;
+            if (data.size() > 0) {
+                for (JSONObject j : data) {
+                    try {
+                        StockData sd = new StockData(j);
+                        mStockData.add(sd);
+                    } catch (JSONException e) {
+                        showErrorMsg(e);
+                    }
                 }
+                // dumpStockData(mStockData);
+                // sendBroadcast();
             }
-            dumpStockData(mStockData);
+            mLoader = null;
         }
     }
 }

@@ -33,8 +33,8 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         init();
         initComponents();
-        // startService(new Intent(MainActivity.this,
-        // StockDataLoaderService.class));
+        startService(new Intent(MainActivity.this,
+                StockDataLoaderService.class));
     }
 
     private void init() {
@@ -43,19 +43,19 @@ public class MainActivity extends Activity {
     }
 
     private void initComponents() {
-        mBtnAdd = (Button)findViewById(R.id.btn_add_new);
-        mBtnEdit = (Button)findViewById(R.id.btn_edit);
-        mBtnOk = (Button)findViewById(R.id.btn_cancel);
-        mBtnCancel = (Button)findViewById(R.id.btn_ok);
+        mBtnAdd = (Button) findViewById(R.id.btn_add_new);
+        mBtnEdit = (Button) findViewById(R.id.btn_edit);
+        mBtnOk = (Button) findViewById(R.id.btn_cancel);
+        mBtnCancel = (Button) findViewById(R.id.btn_ok);
         initStockList();
 
     }
 
     private void initStockList() {
-        mStockList = (ListView)findViewById(R.id.stock_data_list);
+        mStockList = (ListView) findViewById(R.id.stock_data_list);
         ArrayList<StockId> data = mStockDataPreference.retriveData();
-        if(data == null)
-            data = new  ArrayList<StockId>();
+        if (data == null)
+            data = new ArrayList<StockId>();
         StockListAdapter adapter = new StockListAdapter(mContext, data);
         mStockList.setAdapter(adapter);
     }

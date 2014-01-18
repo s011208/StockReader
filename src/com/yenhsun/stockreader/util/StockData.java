@@ -2,11 +2,15 @@
 package com.yenhsun.stockreader.util;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class StockData {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class StockData implements Parcelable {
     public static final String id = "id";
     public static final String t = "t";
     public static final String e = "e";
@@ -19,6 +23,19 @@ public class StockData {
     public static final String c = "c";
     public static final String c_fix = "c_fix";
     private HashMap<String, String> mData = new HashMap<String, String>();
+
+    public StockData(Parcel source) {
+        final int N = source.readInt();
+        for (int i = 0; i < N; i++) {
+            String key = source.readString();
+            String value = source.readString();
+            mData.put(key, value);
+        }
+    }
+
+    public StockData(Map<String, String> data) {
+        mData.putAll(data);
+    }
 
     public StockData(JSONObject j) throws JSONException {
         mData.put(id, j.getString(id));
@@ -99,5 +116,39 @@ public class StockData {
                 + ", getL_CUR: " + getL_CUR() + ", s: " + getS() + ", ltt: " + getLTT() + ", lt: "
                 + getLT() + ", c: " + getC()
                 + ", c_fix: " + getC_FIX();
+    }
+
+    public static final Parcelable.Creator<StockData> CREATOR = new Creator<StockData>() {
+
+        @Override
+        public StockData createFromParcel(Parcel source) {
+            // TODO Auto-generated method stub
+            return new StockData(source);
+        }
+
+        @Override
+        public StockData[] newArray(int size) {
+            // TODO Auto-generated method stub
+            return new StockData[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        // TODO Auto-generated method stub
+        return hashCode();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int arg1) {
+        // TODO Auto-generated method stub
+        final int N = mData.size();
+        dest.writeInt(N);
+        if (N > 0) {
+            for (Map.Entry<String, String> entry : mData.entrySet()) {
+                dest.writeString(entry.getKey());
+                dest.writeString(entry.getValue());
+            }
+        }
     }
 }
