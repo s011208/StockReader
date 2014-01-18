@@ -50,9 +50,12 @@ public class StockReaderWidgetListViewService extends RemoteViewsService {
 
         private Context mContext;
         private ArrayList<StockData> mStockData;
-
+        private int mBullColor;
+        private int mBearColor;
         public MyWidgetFactory(Context context, Intent intent) {
             mContext = context;
+            mBullColor = getBullTextColor();
+            mBearColor = getBearTextColor();
         }
 
         @Override
@@ -87,17 +90,27 @@ public class StockReaderWidgetListViewService extends RemoteViewsService {
             views.setTextViewText(R.id.widget_list_stock_price, sd.getL());
             views.setTextViewText(R.id.widget_list_stock_state, sd.getC());
             if (c > 0) {
-                views.setTextColor(R.id.widget_list_stock_price, Color.RED);
-                views.setTextColor(R.id.widget_list_stock_state, Color.RED);
+                views.setTextColor(R.id.widget_list_stock_price, mBullColor);
+                views.setTextColor(R.id.widget_list_stock_state, mBullColor);
             } else if (c < 0) {
-                views.setTextColor(R.id.widget_list_stock_price, Color.GREEN);
-                views.setTextColor(R.id.widget_list_stock_state, Color.GREEN);
+                views.setTextColor(R.id.widget_list_stock_price, mBearColor);
+                views.setTextColor(R.id.widget_list_stock_state, mBearColor);
             } else {
                 views.setTextColor(R.id.widget_list_stock_price, Color.WHITE);
                 views.setTextColor(R.id.widget_list_stock_state, Color.WHITE);
             }
 
             return views;
+        }
+
+        private int getBullTextColor() {
+            return "zh_TW".equalsIgnoreCase(mContext.getResources().getConfiguration().locale
+                    .toString()) ? Color.RED : Color.GREEN;
+        }
+
+        private int getBearTextColor() {
+            return "zh_TW".equalsIgnoreCase(mContext.getResources().getConfiguration().locale
+                    .toString()) ? Color.GREEN : Color.RED;
         }
 
         @Override
