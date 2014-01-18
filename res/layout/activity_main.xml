@@ -5,11 +5,21 @@
     android:orientation="vertical"
     tools:context=".MainActivity" >
 
+    <TextView
+        android:id="@+id/main_watch_txt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_margin="15dp"
+        android:gravity="center"
+        android:text="@string/main_watch_list"
+        android:textSize="26sp" />
+
     <FrameLayout
         android:id="@+id/ffl"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_below="@+id/main_watch_txt"
         android:layout_gravity="center"
         android:layout_margin="10dp" >
 
@@ -52,28 +62,25 @@
                 style="@style/btnStyleBreakerBay"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginRight="15dp"
                 android:gravity="center"
                 android:text="@string/ok" />
 
-            <Button
-                android:id="@+id/btn_cancel"
-                style="@style/btnStyleBreakerBay"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="15dp"
-                android:gravity="center"
-                android:text="@string/cancel" />
         </LinearLayout>
     </FrameLayout>
 
     <ListView
         android:id="@+id/stock_data_list"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_below="@+id/ffl"
-        android:layout_margin="15dp" >
+        android:layout_centerHorizontal="true"
+        android:layout_margin="15dp"
+        android:background="@drawable/custom_btn_beige"
+        android:shadowColor="#000000"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="0.2" >
     </ListView>
 
 </RelativeLayout>

@@ -11,6 +11,7 @@ import android.app.backup.BackupManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.util.Log;
 
 public class StockDataPreference {
 
@@ -28,7 +29,7 @@ public class StockDataPreference {
         mContext = c;
         mPrefs = mContext.getSharedPreferences(SHARED_PREFS_FILE, Context.MODE_PRIVATE);
         mBackupManager = new BackupManager(mContext);
-//        createFakeData();
+        // createFakeData();
     }
 
     private void createFakeData() {
@@ -50,10 +51,14 @@ public class StockDataPreference {
         saveData(rtn);
     }
 
-    public void addData(StockId data) {
+    public boolean addData(StockId data) {
         ArrayList<StockId> rtn = retriveData();
+        if (rtn.contains(data)) {
+            return false;
+        }
         rtn.add(data);
         saveData(rtn);
+        return true;
     }
 
     public void saveData(ArrayList<StockId> data) {
@@ -75,9 +80,9 @@ public class StockDataPreference {
             ArrayList<StockId> rtn = null;
             Gson gson = new Gson();
             String json = mPrefs.getString(STOCK_LIST, "");
-            rtn = (ArrayList<StockId>)gson.fromJson(json, new TypeToken<ArrayList<StockId>>() {
+            rtn = (ArrayList<StockId>) gson.fromJson(json, new TypeToken<ArrayList<StockId>>() {
             }.getType());
-            if(rtn == null || rtn.size() == 0){
+            if (rtn == null || rtn.size() == 0) {
                 createFakeData();
                 retriveData();
             }

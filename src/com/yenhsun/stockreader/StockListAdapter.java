@@ -3,13 +3,16 @@ package com.yenhsun.stockreader;
 
 import java.util.ArrayList;
 
+import com.yenhsun.stockreader.storage.StockDataPreference;
 import com.yenhsun.stockreader.util.StockId;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
 public class StockListAdapter extends BaseAdapter {
@@ -20,10 +23,23 @@ public class StockListAdapter extends BaseAdapter {
 
     private ArrayList<StockId> mData;
 
-    public StockListAdapter(Context c, ArrayList<StockId> data) {
+    private boolean mIsDeleteMode;
+
+    private StockDataPreference mStockDataPreference;
+
+    public StockListAdapter(Context c, StockDataPreference s) {
         mContext = c;
-        mData = data;
+        mStockDataPreference = s;
+        notifyDataChanged();
         mInflater = LayoutInflater.from(mContext);
+    }
+
+    public void notifyDataChanged() {
+        mData = mStockDataPreference.retriveData();
+    }
+
+    public void setDeleteMode(boolean m) {
+        mIsDeleteMode = m;
     }
 
     @Override
@@ -48,11 +64,21 @@ public class StockListAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         // TODO Auto-generated method stub
         convertView = mInflater.inflate(R.layout.stock_adapter, null);
-        StockId data = mData.get(position);
-        TextView t1 = (TextView)convertView.findViewById(R.id.adapter_txt1);
+        final StockId data = mData.get(position);
+        TextView t1 = (TextView) convertView.findViewById(R.id.main_observe_list_market);
         t1.setText(data.getMarket());
-        TextView t2 = (TextView)convertView.findViewById(R.id.adapter_txt2);
+        TextView t2 = (TextView) convertView.findViewById(R.id.main_observe_list_id);
         t2.setText(data.getId());
+        Button btn = (Button) convertView.findViewById(R.id.man_observe_list_delete);
+        btn.setVisibility(mIsDeleteMode ? View.VISIBLE : View.GONE);
+        btn.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                mStockDataPreference.removeData(data);
+                notifyDataChanged();notifyDataSetChanged();
+            }
+        });
         return convertView;
     }
 
