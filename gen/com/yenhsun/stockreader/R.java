@@ -25,6 +25,7 @@ public final class R {
         public static final int custom_btn_breaker_bay=0x7f020001;
         public static final int dialog_white_background=0x7f020002;
         public static final int ic_launcher=0x7f020003;
+        public static final int ic_launcher_512=0x7f020004;
     }
     public static final class id {
         public static final int action_settings=0x7f090018;
@@ -73,8 +74,11 @@ public final class R {
         public static final int delete=0x7f060009;
         public static final int edit=0x7f060003;
         public static final int enable_update=0x7f06000b;
+        public static final int last_update_time=0x7f06000e;
         public static final int main_add_stock_dialog=0x7f060007;
         public static final int main_watch_list=0x7f060006;
+        public static final int market=0x7f06000f;
+        public static final int name=0x7f060010;
         public static final int off=0x7f06000d;
         public static final int ok=0x7f060004;
         public static final int on=0x7f06000c;

@@ -260,7 +260,11 @@ public class MainObserverList extends Fragment {
                         @Override
                         public void run() {
                             // TODO Auto-generated method stub
-                            Toast.makeText(mContext, mContext.getString(R.string.stock_not_found),
+                            Toast.makeText(
+                                    mContext,
+                                    mContext.getString(R.string.stock_not_found) + ", "
+                                            + mContext.getString(R.string.market) + ": " + market
+                                            + ", " + mContext.getString(R.string.name) + ": " + id,
                                     Toast.LENGTH_SHORT).show();
                         }
                     });

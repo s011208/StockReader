@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">股票快速瀏覽</string>
+    <string name="action_settings">設定</string>
+    <string name="add_new">新增</string>
+    <string name="edit">修改</string>
+    <string name="ok"> @android:string/ok</string>
+    <string name="cancel"> @android:string/cancel</string>
+    <string name="main_watch_list">瀏覽列表</string>
+    <string name="main_add_stock_dialog">"股票代號"</string>
+    <string name="stock_not_found">代號資料未找到</string>
+    <string name="delete">刪除</string>
+    <string name="update_period">更新頻率</string>
+    <string name="enable_update">允許更新</string>
+    <string name="on">開啟</string>
+    <string name="off">關閉</string>
+    <string name="last_update_time">最後更新時間</string>
+    <string name="market">市場</string>
+    <string name="name">名稱代號</string>
+
+</resources>

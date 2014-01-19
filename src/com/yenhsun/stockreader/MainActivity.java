@@ -26,11 +26,11 @@ public class MainActivity extends FragmentActivity {
 
         mTabHost.setup(this, getSupportFragmentManager(), R.id.realtabcontent);
         mTabHost.addTab(mTabHost.newTabSpec("Observer list")
-                .setIndicator("Observer list"),
+                .setIndicator(getBaseContext().getResources().getString(R.string.main_watch_list)),
                 MainObserverList.class,
                 null);
         mTabHost.addTab(mTabHost.newTabSpec("Settings")
-                .setIndicator("Settings"),
+                .setIndicator(getBaseContext().getResources().getString(R.string.action_settings)),
                 MainSettings.class,
                 null);
     }

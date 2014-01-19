@@ -8,11 +8,15 @@
     <string name="ok"> @android:string/ok</string>
     <string name="cancel"> @android:string/cancel</string>
     <string name="main_watch_list">Observer list</string>
-	<string name="main_add_stock_dialog">"Stock name / number"</string>
-	<string name="stock_not_found">Stock not found</string>
-	<string name="delete">Delete</string>
-	<string name="update_period">Update interval</string>
-	<string name="enable_update">Enable update</string>
-	<string name="on">On</string>
-	<string name="off">Off</string>
+    <string name="main_add_stock_dialog">"Stock name / number"</string>
+    <string name="stock_not_found">Stock not found</string>
+    <string name="delete">Delete</string>
+    <string name="update_period">Update interval</string>
+    <string name="enable_update">Enable update</string>
+    <string name="on">On</string>
+    <string name="off">Off</string>
+    <string name="last_update_time">Last updated</string>
+    <string name="market">market</string>
+    <string name="name">name</string>
+
 </resources>

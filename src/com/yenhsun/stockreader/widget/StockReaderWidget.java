@@ -87,7 +87,8 @@ public class StockReaderWidget extends AppWidgetProvider {
             Calendar cal = Calendar.getInstance();
             SimpleDateFormat format1 = new SimpleDateFormat("HH:mm:ss");
             String formatted = format1.format(cal.getTime());
-            updateViews.setTextViewText(R.id.widget_update_time, "Last updated   " + formatted);
+            updateViews.setTextViewText(R.id.widget_update_time,
+                    context.getResources().getString(R.string.last_update_time) + "   " + formatted);
             awm.updateAppWidget(appWidgetId, updateViews);
             awm.notifyAppWidgetViewDataChanged(appWidgetId, R.id.widget_stock_data);
         }
