@@ -275,8 +275,15 @@ public class MainObserverList extends Fragment implements OnDragListener {
                 if (isValid) {
                     boolean updated = mStockDataPreference.addData(new StockId(market, id));
                     if (updated) {
-                        mStockListAdapter.notifyDataChanged();
-                        mStockListAdapter.notifyDataSetChanged();
+                        mMainActivity.runOnUiThread(new Runnable() {
+
+                            @Override
+                            public void run() {
+                                // TODO Auto-generated method stub
+                                mStockListAdapter.notifyDataChanged();
+                                mStockListAdapter.notifyDataSetChanged();
+                            }
+                        });
                     }
                 } else {
                     mMainActivity.runOnUiThread(new Runnable() {
