@@ -6,10 +6,14 @@ import java.util.ArrayList;
 import com.yenhsun.stockreader.storage.StockDataPreference;
 import com.yenhsun.stockreader.util.StockId;
 
+import android.content.ClipData;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.DragShadowBuilder;
 import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
@@ -27,6 +31,8 @@ public class StockListAdapter extends BaseAdapter {
 
     private StockDataPreference mStockDataPreference;
 
+    public static int sDraggingPosition;
+    
     public StockListAdapter(Context c, StockDataPreference s) {
         mContext = c;
         mStockDataPreference = s;
@@ -38,8 +44,12 @@ public class StockListAdapter extends BaseAdapter {
         mData = mStockDataPreference.retriveData();
     }
 
-    public void setDeleteMode(boolean m) {
+    public void setEditMode(boolean m) {
         mIsDeleteMode = m;
+    }
+
+    public boolean isEditMode() {
+        return mIsDeleteMode;
     }
 
     @Override
@@ -61,7 +71,7 @@ public class StockListAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         // TODO Auto-generated method stub
         convertView = mInflater.inflate(R.layout.stock_adapter, null);
         final StockId data = mData.get(position);
@@ -69,14 +79,32 @@ public class StockListAdapter extends BaseAdapter {
         t1.setText(data.getMarket());
         TextView t2 = (TextView) convertView.findViewById(R.id.main_observe_list_id);
         t2.setText(data.getId());
-        Button btn = (Button) convertView.findViewById(R.id.man_observe_list_delete);
+        final Button btn = (Button) convertView.findViewById(R.id.man_observe_list_delete);
         btn.setVisibility(mIsDeleteMode ? View.VISIBLE : View.GONE);
         btn.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 mStockDataPreference.removeData(data);
-                notifyDataChanged();notifyDataSetChanged();
+                notifyDataChanged();
+                notifyDataSetChanged();
+            }
+        });
+        convertView.setOnLongClickListener(new OnLongClickListener() {
+
+            @Override
+            public boolean onLongClick(View v) {
+                // TODO Auto-generated method stub
+                if (mIsDeleteMode) {
+                    sDraggingPosition = position;
+                    v.setVisibility(View.GONE);
+                    ClipData data = ClipData.newPlainText("", "");
+                    DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(v);
+                    v.startDrag(data, shadowBuilder, v, 0);
+                    return true;
+                } else {
+                    return false;
+                }
             }
         });
         return convertView;

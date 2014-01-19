@@ -9,6 +9,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
+import com.yenhsun.stockreader.loader.StockDataLoaderService;
+import com.yenhsun.stockreader.storage.MainAppSettingsPreference;
 import com.yenhsun.stockreader.storage.StockDataPreference;
 import com.yenhsun.stockreader.util.StockId;
 
@@ -17,13 +19,21 @@ import android.animation.ObjectAnimator;
 import android.animation.Animator.AnimatorListener;
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.ClipData;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
+import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.DragShadowBuilder;
+import android.view.View.OnDragListener;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.View.OnClickListener;
@@ -35,7 +45,7 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-public class MainObserverList extends Fragment {
+public class MainObserverList extends Fragment implements OnDragListener {
     public static final String[] SPINNER_ADAPTER = new String[] {
             "TPE", "NASDAQ"
     };
@@ -45,6 +55,7 @@ public class MainObserverList extends Fragment {
     private ListView mStockList;
     private LinearLayout mNormalMode, mEditMode;
     private StockDataPreference mStockDataPreference;
+    private MainAppSettingsPreference mMainAppSettingsPreference;
     private StockListAdapter mStockListAdapter;
     private Context mContext;
     private Activity mMainActivity;
@@ -70,6 +81,7 @@ public class MainObserverList extends Fragment {
     private void init() {
         mContext = mMainActivity;
         mStockDataPreference = new StockDataPreference(mMainActivity);
+        mMainAppSettingsPreference = StockReaderApplicaion.getMainAppSettingsPreference(mContext);
     }
 
     private void initComponents() {
@@ -88,7 +100,7 @@ public class MainObserverList extends Fragment {
 
             @Override
             public void onClick(View arg0) {
-                mStockListAdapter.setDeleteMode(true);
+                mStockListAdapter.setEditMode(true);
                 mStockListAdapter.notifyDataSetChanged();
                 switchObserverListMode(false);
             }
@@ -98,7 +110,7 @@ public class MainObserverList extends Fragment {
 
             @Override
             public void onClick(View arg0) {
-                mStockListAdapter.setDeleteMode(false);
+                mStockListAdapter.setEditMode(false);
                 mStockListAdapter.notifyDataSetChanged();
                 switchObserverListMode(true);
             }
@@ -187,6 +199,18 @@ public class MainObserverList extends Fragment {
             data = new ArrayList<StockId>();
         mStockListAdapter = new StockListAdapter(mContext, mStockDataPreference);
         mStockList.setAdapter(mStockListAdapter);
+        mStockList.setHapticFeedbackEnabled(true);
+        mStockList.setOnDragListener(this);
+    }
+
+    private static int getListViewHeight(ListView parent) {
+        if (parent == null)
+            return 0;
+        int childCount = parent.getChildCount();
+        if (childCount > 0) {
+            return parent.getChildAt(0).getHeight();
+        }
+        return 0;
     }
 
     private void createAddDataDialog() {
@@ -271,5 +295,41 @@ public class MainObserverList extends Fragment {
                 }
             }
         }).start();
+    }
+
+    @Override
+    public boolean onDrag(View v, DragEvent event) {
+        switch (event.getAction()) {
+            case DragEvent.ACTION_DRAG_LOCATION:
+                break;
+            case DragEvent.ACTION_DRAG_STARTED:
+                break;
+            case DragEvent.ACTION_DRAG_ENTERED:
+                break;
+            case DragEvent.ACTION_DRAG_EXITED:
+                break;
+            case DragEvent.ACTION_DROP:
+                int y = (int) event.getY();
+                mStockList.getX();
+                int listviewStartY = (int) mStockList.getX();
+                int listItemHeight = getListViewHeight(mStockList);
+                int target = (y - listviewStartY) / listItemHeight;
+                boolean isReorder = mStockDataPreference.reOrderData(
+                        StockListAdapter.sDraggingPosition, target);
+                if (isReorder) {
+                    mStockListAdapter.notifyDataChanged();
+                    mStockListAdapter.notifyDataSetChanged();
+                    if (mMainAppSettingsPreference.getEnableUpdatingService())
+                        // start service again to update service data
+                        mContext.startService(new Intent(mContext,
+                                StockDataLoaderService.class));
+                }
+                break;
+            case DragEvent.ACTION_DRAG_ENDED:
+                mStockListAdapter.notifyDataSetChanged();
+            default:
+                break;
+        }
+        return true;
     }
 }

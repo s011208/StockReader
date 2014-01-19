@@ -45,6 +45,21 @@ public class StockDataPreference {
         saveData(data);
     }
 
+    public boolean reOrderData(int start, int target) {
+        if (start < 0 || target < 0 || start == target) {
+            return false;
+        }
+        ArrayList<StockId> data = retriveData();
+        StockId s = data.get(start);
+        data.remove(start);
+        if (target > data.size())
+            data.add(s);
+        else
+            data.add(target, s);
+        saveData(data);
+        return true;
+    }
+
     public void removeData(StockId data) {
         ArrayList<StockId> rtn = retriveData();
         rtn.remove(data);
