@@ -9,8 +9,8 @@ import android.util.Log;
 
 public class LoaderTask extends Thread {
 
-    private static final boolean DEBUG = true;
-    private static final String TAG = "QQQQ";
+    private static final boolean DEBUG = false;
+    private static final String TAG = "LoaderTask";
     private static final int MAX_RECONNECTION_COUNT = 60;
 
     private static final int MAX_INTERVAL = 30000;
@@ -82,7 +82,8 @@ public class LoaderTask extends Thread {
                     Log.w(TAG, "", e);
                 }
             } else {
-                Log.e(TAG, "send callback: " + (mCallback != null));
+                if (DEBUG)
+                    Log.d(TAG, "send callback: " + (mCallback != null));
                 if (mCallback != null) {
                     mCallback.setData(data);
                 }

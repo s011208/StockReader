@@ -19,13 +19,8 @@ public class StockReaderWidgetUpdateService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        buildUpdate();
+        StockReaderWidget.performUpdate(this);
         return super.onStartCommand(intent, flags, startId);
-    }
-
-    private void buildUpdate() {
-        AppWidgetManager awm = AppWidgetManager.getInstance(this);
-        StockReaderWidget.performUpdate(this, awm);
     }
 
     @Override

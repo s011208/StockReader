@@ -27,34 +27,40 @@ public final class R {
         public static final int ic_launcher=0x7f020003;
     }
     public static final class id {
-        public static final int action_settings=0x7f090014;
-        public static final int btn_add_new=0x7f090003;
-        public static final int btn_edit=0x7f090004;
-        public static final int btn_ok=0x7f090006;
-        public static final int ffl=0x7f090001;
-        public static final int layout_edit_mode=0x7f090005;
-        public static final int layout_normal_mode=0x7f090002;
-        public static final int main_add_dialog_cancel=0x7f09000b;
-        public static final int main_add_dialog_ok=0x7f09000a;
-        public static final int main_add_dialog_spinner=0x7f090008;
-        public static final int main_add_dialog_stock_id=0x7f090009;
-        public static final int main_observe_list_id=0x7f09000d;
-        public static final int main_observe_list_market=0x7f09000c;
-        public static final int main_watch_txt=0x7f090000;
-        public static final int man_observe_list_delete=0x7f09000e;
-        public static final int stock_data_list=0x7f090007;
-        public static final int widget_list_stock_id=0x7f090011;
-        public static final int widget_list_stock_price=0x7f090012;
-        public static final int widget_list_stock_state=0x7f090013;
-        public static final int widget_stock_data=0x7f09000f;
-        public static final int widget_update_time=0x7f090010;
+        public static final int action_settings=0x7f090018;
+        public static final int btn_add_new=0x7f090007;
+        public static final int btn_edit=0x7f090008;
+        public static final int btn_ok=0x7f09000a;
+        public static final int enable_group=0x7f09000d;
+        public static final int ffl=0x7f090005;
+        public static final int layout_edit_mode=0x7f090009;
+        public static final int layout_normal_mode=0x7f090006;
+        public static final int main_add_dialog_cancel=0x7f090003;
+        public static final int main_add_dialog_ok=0x7f090002;
+        public static final int main_add_dialog_spinner=0x7f090000;
+        public static final int main_add_dialog_stock_id=0x7f090001;
+        public static final int main_observe_list_id=0x7f090011;
+        public static final int main_observe_list_market=0x7f090010;
+        public static final int man_observe_list_delete=0x7f090012;
+        public static final int realtabcontent=0x7f090004;
+        public static final int settings_disable=0x7f09000f;
+        public static final int settings_enable=0x7f09000e;
+        public static final int settings_update_period_spinner=0x7f09000c;
+        public static final int stock_data_list=0x7f09000b;
+        public static final int widget_list_stock_id=0x7f090015;
+        public static final int widget_list_stock_price=0x7f090016;
+        public static final int widget_list_stock_state=0x7f090017;
+        public static final int widget_stock_data=0x7f090013;
+        public static final int widget_update_time=0x7f090014;
     }
     public static final class layout {
-        public static final int activity_main=0x7f030000;
-        public static final int main_add_data_dialog=0x7f030001;
-        public static final int stock_adapter=0x7f030002;
-        public static final int stock_reader_widget=0x7f030003;
-        public static final int stock_reader_widget_item=0x7f030004;
+        public static final int main_add_data_dialog=0x7f030000;
+        public static final int main_fragment=0x7f030001;
+        public static final int main_observer_list=0x7f030002;
+        public static final int main_settings=0x7f030003;
+        public static final int stock_adapter=0x7f030004;
+        public static final int stock_reader_widget=0x7f030005;
+        public static final int stock_reader_widget_item=0x7f030006;
     }
     public static final class menu {
         public static final int main=0x7f080000;
@@ -66,10 +72,14 @@ public final class R {
         public static final int cancel=0x7f060005;
         public static final int delete=0x7f060009;
         public static final int edit=0x7f060003;
+        public static final int enable_update=0x7f06000b;
         public static final int main_add_stock_dialog=0x7f060007;
         public static final int main_watch_list=0x7f060006;
+        public static final int off=0x7f06000d;
         public static final int ok=0x7f060004;
+        public static final int on=0x7f06000c;
         public static final int stock_not_found=0x7f060008;
+        public static final int update_period=0x7f06000a;
     }
     public static final class style {
         /** 

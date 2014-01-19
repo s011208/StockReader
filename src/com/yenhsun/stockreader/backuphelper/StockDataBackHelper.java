@@ -16,12 +16,12 @@ import android.util.Log;
 public class StockDataBackHelper extends BackupAgentHelper {
     private static final boolean DEBUG = true;
 
-    private static final String TAG = "QQQQ";
+    private static final String TAG = "BackupAgentHelper";
 
     @Override
     public void onCreate() {
         if (DEBUG)
-            Log.e(TAG, "StockDataBackHelper oncreate");
+            Log.d(TAG, "StockDataBackHelper oncreate");
         String sharPath = null;
         File sharfDirectory = new File(getFilesDir(), "../shared_prefs");
         if (sharfDirectory != null && sharfDirectory.isDirectory()) {
@@ -40,7 +40,7 @@ public class StockDataBackHelper extends BackupAgentHelper {
             ParcelFileDescriptor newState) throws IOException {
         // Hold the lock while the FileBackupHelper performs backup
         if (DEBUG)
-            Log.e(TAG, "StockDataBackHelper backup");
+            Log.d(TAG, "StockDataBackHelper backup");
         // synchronized (MainActivity.sDataLock) {
         super.onBackup(oldState, data, newState);
         // }
@@ -50,7 +50,7 @@ public class StockDataBackHelper extends BackupAgentHelper {
     public void onRestore(BackupDataInput data, int appVersionCode, ParcelFileDescriptor newState)
             throws IOException {
         if (DEBUG)
-            Log.e(TAG, "StockDataBackHelper restore");
+            Log.d(TAG, "StockDataBackHelper restore");
         // Hold the lock while the FileBackupHelper restores the file
         // synchronized (MainActivity.sDataLock) {
         super.onRestore(data, appVersionCode, newState);

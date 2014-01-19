@@ -24,8 +24,8 @@ import com.yenhsun.stockreader.util.StockData;
 
 public class StockReaderWidgetListViewService extends RemoteViewsService {
 
-    private static final boolean DEBUG = true;
-    private static final String TAG = "QQQQ";
+    private static final boolean DEBUG = false;
+    private static final String TAG = "StockReaderWidgetListViewService";
 
     public void onCreate() {
         super.onCreate();

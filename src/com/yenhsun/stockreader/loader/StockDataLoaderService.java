@@ -6,23 +6,28 @@ import java.util.ArrayList;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.yenhsun.stockreader.MainActivity;
+import com.yenhsun.stockreader.StockReaderApplicaion;
+import com.yenhsun.stockreader.storage.MainAppSettingsPreference;
 import com.yenhsun.stockreader.storage.StockDataPreference;
 import com.yenhsun.stockreader.util.StockData;
 import com.yenhsun.stockreader.util.UrlStringComposer;
 
 import android.app.Service;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
+import android.content.IntentFilter;
 import android.os.IBinder;
 import android.util.Log;
 
 public class StockDataLoaderService extends Service implements StockLoaderCallback {
     private static final boolean DEBUG = true;
 
-    private static final String TAG = "QQQQ";
+    private static final String TAG = "StockDataLoaderService";
 
     private static final ArrayList<StockData> mStockData = new ArrayList<StockData>();
+
+    private static boolean sThreadStopSignal = false;
 
     private LoaderTask mLoader;
 
@@ -30,9 +35,33 @@ public class StockDataLoaderService extends Service implements StockLoaderCallba
 
     private StockDataPreference mStockDataPreference;
 
+    private MainAppSettingsPreference mMainAppSettingsPreference;
+
+    private int mUpdatingTimePeriod;
+
+    private BroadcastReceiver mReceiver;
+
     public void onCreate() {
         super.onCreate();
         mStockDataPreference = new StockDataPreference(this);
+        mMainAppSettingsPreference = StockReaderApplicaion.getMainAppSettingsPreference(this);
+        mUpdatingTimePeriod = mMainAppSettingsPreference.getUpdatingPeriodTime();
+        mReceiver = new BroadcastReceiver() {
+
+            @Override
+            public void onReceive(Context arg0, Intent arg1) {
+                // TODO Auto-generated method stub
+                String action = arg1.getAction();
+                if (MainAppSettingsPreference.INTENT_CHANGE_UPDATING_PERIOD_TIME.equals(action)) {
+                    mUpdatingTimePeriod = arg1.getIntExtra(
+                            MainAppSettingsPreference.INTENT_CHANGE_UPDATING_PERIOD_TIME,
+                            mUpdatingTimePeriod);
+                }
+            }
+        };
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(MainAppSettingsPreference.INTENT_CHANGE_UPDATING_PERIOD_TIME);
+        registerReceiver(mReceiver, filter);
     }
 
     public static ArrayList<StockData> retriveStockData() {
@@ -42,16 +71,19 @@ public class StockDataLoaderService extends Service implements StockLoaderCallba
     }
 
     public int onStartCommand(Intent intent, int flags, int startId) {
+        sThreadStopSignal = false;
         mParsingString = UrlStringComposer.retriveGoogleUrl(mStockDataPreference.retriveData());
         new Thread(new Runnable() {
 
             @Override
             public void run() {
                 // TODO Auto-generated method stub
-                while (true) {
+                while (true && !sThreadStopSignal) {
+                    if (DEBUG)
+                        Log.d(TAG, "Stock reader is going to query data!");
                     parse(mParsingString);
                     try {
-                        Thread.sleep(10000);
+                        Thread.sleep(mUpdatingTimePeriod);
                     } catch (InterruptedException e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
@@ -66,12 +98,14 @@ public class StockDataLoaderService extends Service implements StockLoaderCallba
     public void onDestroy() {
         super.onDestroy();
         // release loader
+        sThreadStopSignal = true;
         if (mLoader != null) {
             if (mLoader.isLoading()) {
                 mLoader.forceCancel();
             }
             mLoader.setCallback(null);
         }
+        unregisterReceiver(mReceiver);
     }
 
     private void parse(String url) {
@@ -94,13 +128,13 @@ public class StockDataLoaderService extends Service implements StockLoaderCallba
 
     private static final void showErrorMsg(Exception e) {
         if (DEBUG)
-            Log.e(TAG, "", e);
+            Log.w(TAG, "", e);
     }
 
     public static final void dumpStockData(ArrayList<StockData> data) {
         if (DEBUG)
             for (StockData s : data)
-                Log.e(TAG, s.toString());
+                Log.v(TAG, s.toString());
     }
 
     @Override
@@ -118,7 +152,6 @@ public class StockDataLoaderService extends Service implements StockLoaderCallba
                     }
                 }
                 // dumpStockData(mStockData);
-                // sendBroadcast();
             }
             mLoader = null;
         }

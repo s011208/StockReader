@@ -17,8 +17,8 @@ import android.util.Log;
 
 public class JsonHttpLoader {
     // "http://finance.google.com/finance/info?client=ig&q=NASDAQ:GOOG,NASDAQ:YHOO"
-    private static final boolean DEBUG = true;
-    private static final String TAG = "QQQQ";
+    private static final boolean DEBUG = false;
+    private static final String TAG = "JsonHttpLoader";
 
     public JsonHttpLoader() {
     }
@@ -62,6 +62,6 @@ public class JsonHttpLoader {
 
     private static void showErrorMsg(Exception e) {
         if (DEBUG)
-            Log.e(TAG, "", e);
+            Log.w(TAG, "", e);
     }
 }

@@ -6,9 +6,9 @@ import java.util.ArrayList;
 import android.util.Log;
 
 public class UrlStringComposer {
-    private static final String TAG = "QQQQ";
+    private static final String TAG = "UrlStringComposer";
 
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
 
     public static String retriveGoogleUrl(ArrayList<StockId> data) {
         StringBuilder sb = new StringBuilder("http://finance.google.com/finance/info?client=ig&q=");
@@ -17,7 +17,7 @@ public class UrlStringComposer {
         }
         sb.deleteCharAt(sb.length() - 1);
         if (DEBUG)
-            Log.e(TAG, sb.toString());
+            Log.d(TAG, sb.toString());
         return sb.toString();
     }
 }
