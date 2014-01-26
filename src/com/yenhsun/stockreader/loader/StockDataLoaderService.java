@@ -42,7 +42,7 @@ public class StockDataLoaderService extends Service implements StockLoaderCallba
 
     private BroadcastReceiver mReceiver;
 
-    private boolean misForcedPauseUpdating;
+    private boolean misForcedPauseUpdating = false;
 
     public void onCreate() {
         super.onCreate();
@@ -95,6 +95,10 @@ public class StockDataLoaderService extends Service implements StockLoaderCallba
                         if (DEBUG)
                             Log.d(TAG, "Stock reader is going to query data!");
                         parse(mParsingString);
+                    } else {
+                        if (DEBUG)
+                            Log.w(TAG, "skip update, misForcedPauseUpdating: "
+                                    + misForcedPauseUpdating);
                     }
                     try {
                         Thread.sleep(mUpdatingTimePeriod);
@@ -156,6 +160,9 @@ public class StockDataLoaderService extends Service implements StockLoaderCallba
     @Override
     public void setData(ArrayList<JSONObject> d) {
         synchronized (mStockData) {
+            if (DEBUG) {
+                Log.d(TAG, "get callback");
+            }
             mStockData.clear();
             ArrayList<JSONObject> data = d;
             if (data.size() > 0) {
@@ -170,6 +177,9 @@ public class StockDataLoaderService extends Service implements StockLoaderCallba
                 // dumpStockData(mStockData);
             }
             mLoader = null;
+            if (DEBUG) {
+                Log.i(TAG, "trying to update widget");
+            }
             StockReaderWidget.performUpdate(this);
         }
     }
