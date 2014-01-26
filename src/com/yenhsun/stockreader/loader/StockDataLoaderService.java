@@ -11,6 +11,7 @@ import com.yenhsun.stockreader.storage.MainAppSettingsPreference;
 import com.yenhsun.stockreader.storage.StockDataPreference;
 import com.yenhsun.stockreader.util.StockData;
 import com.yenhsun.stockreader.util.UrlStringComposer;
+import com.yenhsun.stockreader.widget.StockReaderWidget;
 
 import android.app.Service;
 import android.content.BroadcastReceiver;
@@ -109,6 +110,8 @@ public class StockDataLoaderService extends Service implements StockLoaderCallba
     }
 
     private void parse(String url) {
+        if (url == null)
+            return;
         if (mLoader != null) {
             // still loading
             return;
@@ -154,6 +157,7 @@ public class StockDataLoaderService extends Service implements StockLoaderCallba
                 // dumpStockData(mStockData);
             }
             mLoader = null;
+//            StockReaderWidget.performUpdate(this);
         }
     }
 }

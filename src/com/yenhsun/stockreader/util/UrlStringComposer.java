@@ -11,6 +11,8 @@ public class UrlStringComposer {
     private static final boolean DEBUG = false;
 
     public static String retriveGoogleUrl(ArrayList<StockId> data) {
+        if (data == null)
+            return null;
         StringBuilder sb = new StringBuilder("http://finance.google.com/finance/info?client=ig&q=");
         for (StockId d : data) {
             sb.append(d.getMarket() + ":" + d.getId() + ",");
