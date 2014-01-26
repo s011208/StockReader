@@ -32,10 +32,8 @@ public class MainAppSettingsPreference {
         mPrefs.edit().putBoolean(ENABLE_SERVICE_UPDATE, enable).commit();
         if (enable) {
             mContext.startService(new Intent(mContext, StockDataLoaderService.class));
-            StockReaderWidget.setAlarmManagerIntent(mContext, getUpdatingPeriodTime());
         } else {
             mContext.stopService(new Intent(mContext, StockDataLoaderService.class));
-            StockReaderWidget.cancelAlarmManagerIntent(mContext);
         }
     }
 
@@ -50,7 +48,6 @@ public class MainAppSettingsPreference {
         mContext.sendBroadcast(new Intent(INTENT_CHANGE_UPDATING_PERIOD_TIME).putExtra(
                 INTENT_CHANGE_UPDATING_PERIOD_TIME, t)); // update loader
                                                          // service
-        StockReaderWidget.setAlarmManagerIntent(mContext, t); // update widget
     }
 
     /**

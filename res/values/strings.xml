@@ -18,5 +18,7 @@
     <string name="last_update_time">Last updated</string>
     <string name="market">market</string>
     <string name="name">name</string>
+    <string name="stop_when_screen_of">Stop updating when screen off</string>
+    <string name="start_when_boot_up">Start updating when boot up</string>
 
 </resources>

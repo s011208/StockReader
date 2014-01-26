@@ -18,5 +18,7 @@
     <string name="last_update_time">最後更新時間</string>
     <string name="market">市場</string>
     <string name="name">名稱代號</string>
+    <string name="stop_when_screen_of">螢幕關閉時暫停更新</string>
+    <string name="start_when_boot_up">開機後自動開始更新</string>
 
 </resources>

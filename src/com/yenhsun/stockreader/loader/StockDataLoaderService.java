@@ -157,7 +157,8 @@ public class StockDataLoaderService extends Service implements StockLoaderCallba
                 // dumpStockData(mStockData);
             }
             mLoader = null;
-//            StockReaderWidget.performUpdate(this);
+            Log.e("QQQQ", "get callback");
+            StockReaderWidget.performUpdate(this);
         }
     }
 }

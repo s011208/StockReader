@@ -24,49 +24,12 @@ public class StockReaderWidget extends AppWidgetProvider {
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-        setAlarmManagerIntent(context, StockReaderApplicaion.getMainAppSettingsPreference(context)
-                .getUpdatingPeriodTime());
         performUpdate(context, appWidgetManager);
         super.onUpdate(context, appWidgetManager, appWidgetIds);
     }
 
     @Override
     public void onDisabled(Context context) {
-        cancelAlarmManagerIntent(context);
-    }
-
-    private static PendingIntent getAlarmManagerIntent(Context context) {
-        final Intent i = new Intent(context, StockReaderWidgetUpdateService.class);
-        PendingIntent updateService = PendingIntent.getService(context, 0, i,
-                PendingIntent.FLAG_CANCEL_CURRENT);
-        return updateService;
-    }
-
-    public static void setAlarmManagerIntent(Context context) {
-        setAlarmManagerIntent(context, 1000 * 10);
-    }
-
-    public static void setAlarmManagerIntent(Context context, int updateTime) {
-        int widgetId[] = AppWidgetManager.getInstance(context).getAppWidgetIds(
-                new ComponentName(context, StockReaderWidget.class));
-        if (widgetId != null && widgetId.length != 0) {
-            final AlarmManager alarmManager = (AlarmManager) context
-                    .getSystemService(Context.ALARM_SERVICE);
-            final Calendar time = Calendar.getInstance();
-            time.set(Calendar.MINUTE, 0);
-            time.set(Calendar.SECOND, 0);
-            time.set(Calendar.MILLISECOND, 0);
-            PendingIntent updateService = getAlarmManagerIntent(context);
-            alarmManager.cancel(updateService);
-            alarmManager.setRepeating(AlarmManager.RTC, time.getTime().getTime(), updateTime,
-                    updateService);
-        }
-    }
-
-    public static void cancelAlarmManagerIntent(Context context) {
-        final AlarmManager alarmManager = (AlarmManager) context
-                .getSystemService(Context.ALARM_SERVICE);
-        alarmManager.cancel(getAlarmManagerIntent(context));
     }
 
     public static void performUpdate(Context context) {

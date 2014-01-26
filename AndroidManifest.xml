@@ -52,7 +52,6 @@
             android:exported="false"
             android:permission="android.permission.BIND_REMOTEVIEWS" >
         </service>
-        <service android:name="com.yenhsun.stockreader.widget.StockReaderWidgetUpdateService" />
         <!-- widget end -->
     </application>
 

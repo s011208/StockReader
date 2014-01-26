@@ -28,7 +28,7 @@ public class MainSettings extends Fragment {
     private Context mContext;
     private Spinner mUpdatePeriodSpinner;
     private MainAppSettingsPreference mMainAppSettingsPreference;
-    private RadioGroup mEnableGroup;
+    private RadioGroup mEnableGroup, mEnableWhenScreenOff, mEnableWhenBootUp;
 
     @Override
     public void onAttach(Activity activity) {
@@ -111,6 +111,9 @@ public class MainSettings extends Fragment {
                 }
             }
         });
+        mEnableWhenScreenOff = (RadioGroup) getView().findViewById(
+                R.id.enable_when_screen_off_group);
+        mEnableWhenBootUp = (RadioGroup) getView().findViewById(R.id.enable_start_when_boot_up);
     }
 
     private int getSpinnerDefaultSelectionPosition() {
