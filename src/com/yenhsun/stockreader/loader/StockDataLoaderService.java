@@ -42,6 +42,8 @@ public class StockDataLoaderService extends Service implements StockLoaderCallba
 
     private BroadcastReceiver mReceiver;
 
+    private boolean misForcedPauseUpdating;
+
     public void onCreate() {
         super.onCreate();
         mStockDataPreference = new StockDataPreference(this);
@@ -57,11 +59,20 @@ public class StockDataLoaderService extends Service implements StockLoaderCallba
                     mUpdatingTimePeriod = arg1.getIntExtra(
                             MainAppSettingsPreference.INTENT_CHANGE_UPDATING_PERIOD_TIME,
                             mUpdatingTimePeriod);
+                } else if (Intent.ACTION_SCREEN_OFF.equals(action)) {
+                    if (mMainAppSettingsPreference.getEnableUpdatingWhenScreenOff() == false)
+                        misForcedPauseUpdating = true;
+                    else
+                        misForcedPauseUpdating = false;
+                } else if (Intent.ACTION_SCREEN_ON.equals(action)) {
+                    misForcedPauseUpdating = false;
                 }
             }
         };
         IntentFilter filter = new IntentFilter();
         filter.addAction(MainAppSettingsPreference.INTENT_CHANGE_UPDATING_PERIOD_TIME);
+        filter.addAction(Intent.ACTION_SCREEN_OFF);
+        filter.addAction(Intent.ACTION_SCREEN_ON);
         registerReceiver(mReceiver, filter);
     }
 
@@ -80,9 +91,11 @@ public class StockDataLoaderService extends Service implements StockLoaderCallba
             public void run() {
                 // TODO Auto-generated method stub
                 while (true && !sThreadStopSignal) {
-                    if (DEBUG)
-                        Log.d(TAG, "Stock reader is going to query data!");
-                    parse(mParsingString);
+                    if (misForcedPauseUpdating == false) {
+                        if (DEBUG)
+                            Log.d(TAG, "Stock reader is going to query data!");
+                        parse(mParsingString);
+                    }
                     try {
                         Thread.sleep(mUpdatingTimePeriod);
                     } catch (InterruptedException e) {
@@ -157,7 +170,6 @@ public class StockDataLoaderService extends Service implements StockLoaderCallba
                 // dumpStockData(mStockData);
             }
             mLoader = null;
-            Log.e("QQQQ", "get callback");
             StockReaderWidget.performUpdate(this);
         }
     }

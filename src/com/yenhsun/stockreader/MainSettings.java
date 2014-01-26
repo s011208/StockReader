@@ -113,7 +113,39 @@ public class MainSettings extends Fragment {
         });
         mEnableWhenScreenOff = (RadioGroup) getView().findViewById(
                 R.id.enable_when_screen_off_group);
+        mEnableWhenScreenOff
+                .check(mMainAppSettingsPreference.getEnableUpdatingWhenScreenOff() ? R.id.settings_enable_when_screen_off
+                        : R.id.settings_disable_when_screen_off);
+        mEnableWhenScreenOff.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId) {
+                    case R.id.settings_enable_when_screen_off:
+                        mMainAppSettingsPreference.setEnableUpdatingWhenScreenOff(true);
+                        break;
+                    case R.id.settings_disable_when_screen_off:
+                        mMainAppSettingsPreference.setEnableUpdatingWhenScreenOff(false);
+                        break;
+                }
+            }
+        });
         mEnableWhenBootUp = (RadioGroup) getView().findViewById(R.id.enable_start_when_boot_up);
+        mEnableWhenBootUp
+                .check(mMainAppSettingsPreference.getEnableUpdatingWhenBootUp() ? R.id.settings_enable_start_when_boot_up
+                        : R.id.settings_disable_when_screen_off);
+        mEnableWhenBootUp.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId) {
+                    case R.id.settings_enable_start_when_boot_up:
+                        mMainAppSettingsPreference.setEnableUpdatingWhenBootUp(true);
+                        break;
+                    case R.id.settings_disable_when_screen_off:
+                        mMainAppSettingsPreference.setEnableUpdatingWhenBootUp(false);
+                        break;
+                }
+            }
+        });
     }
 
     private int getSpinnerDefaultSelectionPosition() {

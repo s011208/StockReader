@@ -23,9 +23,28 @@ public class MainAppSettingsPreference {
     public static final String ENABLE_SERVICE_UPDATE = "enable_service_update";
     public static final String INTENT_ENABLE_SERVICE_UPDATE = "com.yenhsun.stockreader.storage.enable.service.update";
 
+    public static final String ENABLE_UPDATE_WHEN_SCREEN_OFF = "enable_update_when_screen_off";
+    public static final String ENABLE_UPDATE_WHEN_BOOT_UP = "enable_update_when_boot_up";
+
     public MainAppSettingsPreference(Context c) {
         mContext = c;
         mPrefs = mContext.getSharedPreferences(SHARED_PREFS_FILE, Context.MODE_PRIVATE);
+    }
+
+    public void setEnableUpdatingWhenBootUp(boolean enable) {
+        mPrefs.edit().putBoolean(ENABLE_UPDATE_WHEN_BOOT_UP, enable).commit();
+    }
+
+    public boolean getEnableUpdatingWhenBootUp() {
+        return mPrefs.getBoolean(ENABLE_UPDATE_WHEN_BOOT_UP, true);
+    }
+
+    public void setEnableUpdatingWhenScreenOff(boolean enable) {
+        mPrefs.edit().putBoolean(ENABLE_UPDATE_WHEN_SCREEN_OFF, enable).commit();
+    }
+
+    public boolean getEnableUpdatingWhenScreenOff() {
+        return mPrefs.getBoolean(ENABLE_UPDATE_WHEN_SCREEN_OFF, true);
     }
 
     public void setEnableUpdatingService(boolean enable) {
