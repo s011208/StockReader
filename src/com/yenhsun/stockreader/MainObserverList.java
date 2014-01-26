@@ -9,7 +9,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
+import com.yenhsun.stockreader.loader.GoogleJsonLoader;
 import com.yenhsun.stockreader.loader.StockDataLoaderService;
+import com.yenhsun.stockreader.loader.YahooJsonLoader;
 import com.yenhsun.stockreader.storage.MainAppSettingsPreference;
 import com.yenhsun.stockreader.storage.StockDataPreference;
 import com.yenhsun.stockreader.util.StockId;
@@ -250,28 +252,11 @@ public class MainObserverList extends Fragment implements OnDragListener {
 
             @Override
             public void run() {
-                InputStream is;
-                boolean isValid = false;
-                try {
-                    is = new URL("http://finance.google.com/finance/info?client=ig&q=" + market
-                            + ":" + id)
-                            .openStream();
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(
-                            is, "iso-8859-1"), 8);
-                    StringBuilder sb = new StringBuilder();
-                    String line = null;
-                    while ((line = reader.readLine()) != null) {
-                        sb.append(line);
-                    }
-                    is.close();
-                    isValid = true;
-                } catch (MalformedURLException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
+                ArrayList<StockId> data = new ArrayList<StockId>();
+                data.add(new StockId(market, id));
+                boolean isGValid = GoogleJsonLoader.isDataValid(data);
+                boolean isYValid = YahooJsonLoader.isDataValid(data);
+                boolean isValid = isGValid || isYValid;
                 if (isValid) {
                     boolean updated = mStockDataPreference.addData(new StockId(market, id));
                     if (updated) {
@@ -282,6 +267,8 @@ public class MainObserverList extends Fragment implements OnDragListener {
                                 // TODO Auto-generated method stub
                                 mStockListAdapter.notifyDataChanged();
                                 mStockListAdapter.notifyDataSetChanged();
+                                mMainActivity.startService(new Intent(mMainActivity,
+                                        StockDataLoaderService.class));
                             }
                         });
                     }

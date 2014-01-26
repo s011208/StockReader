@@ -3,11 +3,13 @@ package com.yenhsun.stockreader;
 
 import java.util.ArrayList;
 
+import com.yenhsun.stockreader.loader.StockDataLoaderService;
 import com.yenhsun.stockreader.storage.StockDataPreference;
 import com.yenhsun.stockreader.util.StockId;
 
 import android.content.ClipData;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,7 +34,7 @@ public class StockListAdapter extends BaseAdapter {
     private StockDataPreference mStockDataPreference;
 
     public static int sDraggingPosition;
-    
+
     public StockListAdapter(Context c, StockDataPreference s) {
         mContext = c;
         mStockDataPreference = s;
@@ -88,6 +90,8 @@ public class StockListAdapter extends BaseAdapter {
                 mStockDataPreference.removeData(data);
                 notifyDataChanged();
                 notifyDataSetChanged();
+                mContext.startService(new Intent(mContext,
+                        StockDataLoaderService.class));
             }
         });
         convertView.setOnLongClickListener(new OnLongClickListener() {

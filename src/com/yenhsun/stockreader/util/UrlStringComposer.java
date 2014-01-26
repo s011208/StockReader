@@ -22,4 +22,11 @@ public class UrlStringComposer {
             Log.d(TAG, sb.toString());
         return sb.toString();
     }
+
+    public static String retriveYahooUrl(StockId id) {
+        if (id == null)
+            return null;
+        String rtn = "http://tw.stock.yahoo.com/q/q?s=" + id.getId();
+        return rtn;
+    }
 }

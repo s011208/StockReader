@@ -10,6 +10,7 @@ import com.yenhsun.stockreader.StockReaderApplicaion;
 import com.yenhsun.stockreader.storage.MainAppSettingsPreference;
 import com.yenhsun.stockreader.storage.StockDataPreference;
 import com.yenhsun.stockreader.util.StockData;
+import com.yenhsun.stockreader.util.StockId;
 import com.yenhsun.stockreader.util.UrlStringComposer;
 import com.yenhsun.stockreader.widget.StockReaderWidget;
 
@@ -32,8 +33,6 @@ public class StockDataLoaderService extends Service implements StockLoaderCallba
 
     private LoaderTask mLoader;
 
-    private String mParsingString;
-
     private StockDataPreference mStockDataPreference;
 
     private MainAppSettingsPreference mMainAppSettingsPreference;
@@ -43,6 +42,8 @@ public class StockDataLoaderService extends Service implements StockLoaderCallba
     private BroadcastReceiver mReceiver;
 
     private boolean misForcedPauseUpdating = false;
+
+    private ArrayList<StockId> mStockList;
 
     public void onCreate() {
         super.onCreate();
@@ -83,8 +84,11 @@ public class StockDataLoaderService extends Service implements StockLoaderCallba
     }
 
     public int onStartCommand(Intent intent, int flags, int startId) {
+        if (DEBUG)
+            Log.e(TAG, "StockDataLoaderService onStartCommand");
         sThreadStopSignal = false;
-        mParsingString = UrlStringComposer.retriveGoogleUrl(mStockDataPreference.retriveData());
+        mStockList = mStockDataPreference.retriveData();
+
         new Thread(new Runnable() {
 
             @Override
@@ -94,7 +98,7 @@ public class StockDataLoaderService extends Service implements StockLoaderCallba
                     if (misForcedPauseUpdating == false) {
                         if (DEBUG)
                             Log.d(TAG, "Stock reader is going to query data!");
-                        parse(mParsingString);
+                        parse();
                     } else {
                         if (DEBUG)
                             Log.w(TAG, "skip update, misForcedPauseUpdating: "
@@ -126,16 +130,12 @@ public class StockDataLoaderService extends Service implements StockLoaderCallba
         unregisterReceiver(mReceiver);
     }
 
-    private void parse(String url) {
-        if (url == null)
-            return;
+    private void parse() {
         if (mLoader != null) {
             // still loading
             return;
         }
-        mLoader = new LoaderTask();
-        mLoader.setUrl(url);
-        mLoader.setCallback(this);
+        mLoader = new LoaderTask(mStockList, this);
         // mLoader.setUrl("http://finance.google.com/finance/info?client=ig&q=NASDAQ:GOOG,NASDAQ:YHOO");
         mLoader.start();
     }

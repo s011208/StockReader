@@ -5,6 +5,8 @@ import java.util.ArrayList;
 
 import org.json.JSONObject;
 
+import com.yenhsun.stockreader.util.StockId;
+
 import android.util.Log;
 
 public class LoaderTask extends Thread {
@@ -20,16 +22,18 @@ public class LoaderTask extends Thread {
 
     private boolean mIsLoading = false;
 
-    private final JsonHttpLoader mHttpLoader = new JsonHttpLoader();
-
-    private String mUrl = null;
+    private final JsonLoader mHttpLoader = new YahooJsonLoader();
 
     private StockLoaderCallback mCallback;
 
     private boolean mCancel = false;
 
-    public LoaderTask() {
+    private ArrayList<StockId> mData;
+
+    public LoaderTask(ArrayList<StockId> data, StockLoaderCallback c) {
         super();
+        mCallback = c;
+        mData = data;
     }
 
     public void forceCancel() {
@@ -56,25 +60,19 @@ public class LoaderTask extends Thread {
         mCallback = c;
     }
 
-    public void setUrl(String url) {
-        mUrl = url;
-    }
-
     public boolean isLoading() {
         return mIsLoading;
     }
 
     public void run() {
         mIsLoading = mCancel = false;
-        if (mUrl == null)
-            return;
         dumpStates();
         mIsLoading = true;
         for (int i = 0; i < mReconnectionCount; i++) {
             if (mCancel)
                 return;
             ArrayList<JSONObject> data = mHttpLoader
-                    .parse(mUrl);
+                    .parse(mData);
             if (data == null) {
                 try {
                     Thread.sleep(mInterval);
@@ -95,7 +93,7 @@ public class LoaderTask extends Thread {
 
     private void dumpStates() {
         if (DEBUG)
-            Log.i(TAG, "mUrl: " + mUrl + ", mReconnectionCount: " + mReconnectionCount
+            Log.i(TAG, "mReconnectionCount: " + mReconnectionCount
                     + ", mInterval: " + mInterval);
     }
 }
