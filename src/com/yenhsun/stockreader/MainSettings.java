@@ -60,7 +60,6 @@ public class MainSettings extends Fragment {
 
             @Override
             public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-                // TODO Auto-generated method stub
                 int time = 10000;
                 switch (arg2) {
                     case 0:
@@ -90,8 +89,6 @@ public class MainSettings extends Fragment {
 
             @Override
             public void onNothingSelected(AdapterView<?> arg0) {
-                // TODO Auto-generated method stub
-
             }
         });
         mEnableGroup = (RadioGroup) getView().findViewById(R.id.enable_group);

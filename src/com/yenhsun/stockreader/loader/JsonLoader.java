@@ -20,6 +20,7 @@ import android.util.Log;
 
 public abstract class JsonLoader {
     // "http://finance.google.com/finance/info?client=ig&q=NASDAQ:GOOG,NASDAQ:YHOO"
+    // "http://tw.stock.yahoo.com/q/q?s=6298"
     static final boolean DEBUG = false;
     static final String TAG = "JsonHttpLoader";
 
@@ -81,10 +82,8 @@ public abstract class JsonLoader {
                 }
             } while (true);
         } catch (MalformedURLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return rtn;

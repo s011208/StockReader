@@ -14,7 +14,6 @@ public class GoogleJsonLoader extends JsonLoader {
 
     @Override
     public ArrayList<JSONObject> parse(ArrayList<StockId> data) {
-        // TODO Auto-generated method stub
         ArrayList<JSONObject> rtn = new ArrayList<JSONObject>();
         String url = UrlStringComposer.retriveGoogleUrl(data);
         if (url == null)

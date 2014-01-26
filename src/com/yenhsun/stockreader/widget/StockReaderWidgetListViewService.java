@@ -37,7 +37,6 @@ public class StockReaderWidgetListViewService extends RemoteViewsService {
 
     @Override
     public IBinder onBind(Intent arg0) {
-        // TODO Auto-generated method stub
         return super.onBind(arg0);
     }
 

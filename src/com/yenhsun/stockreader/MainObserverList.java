@@ -129,25 +129,20 @@ public class MainObserverList extends Fragment implements OnDragListener {
 
                 @Override
                 public void onAnimationCancel(Animator animation) {
-                    // TODO Auto-generated method stub
-
                 }
 
                 @Override
                 public void onAnimationEnd(Animator animation) {
-                    // TODO Auto-generated method stub
                     mEditMode.setVisibility(View.GONE);
                 }
 
                 @Override
                 public void onAnimationRepeat(Animator animation) {
-                    // TODO Auto-generated method stub
 
                 }
 
                 @Override
                 public void onAnimationStart(Animator animation) {
-                    // TODO Auto-generated method stub
                     mNormalMode.setAlpha(0);
                     mNormalMode.setVisibility(View.VISIBLE);
                 }
@@ -163,25 +158,19 @@ public class MainObserverList extends Fragment implements OnDragListener {
 
                 @Override
                 public void onAnimationCancel(Animator animation) {
-                    // TODO Auto-generated method stub
-
                 }
 
                 @Override
                 public void onAnimationEnd(Animator animation) {
-                    // TODO Auto-generated method stub
                     mNormalMode.setVisibility(View.GONE);
                 }
 
                 @Override
                 public void onAnimationRepeat(Animator animation) {
-                    // TODO Auto-generated method stub
-
                 }
 
                 @Override
                 public void onAnimationStart(Animator animation) {
-                    // TODO Auto-generated method stub
                     mEditMode.setAlpha(0);
                     mEditMode.setVisibility(View.VISIBLE);
                 }
@@ -230,7 +219,6 @@ public class MainObserverList extends Fragment implements OnDragListener {
 
             @Override
             public void onClick(View v) {
-                // TODO Auto-generated method stub
                 verifyDataExist(market.getSelectedItem().toString(), id.getText().toString());
                 dialog.dismiss();
             }
@@ -240,7 +228,6 @@ public class MainObserverList extends Fragment implements OnDragListener {
 
             @Override
             public void onClick(View v) {
-                // TODO Auto-generated method stub
                 dialog.dismiss();
             }
         });
@@ -264,7 +251,6 @@ public class MainObserverList extends Fragment implements OnDragListener {
 
                             @Override
                             public void run() {
-                                // TODO Auto-generated method stub
                                 mStockListAdapter.notifyDataChanged();
                                 mStockListAdapter.notifyDataSetChanged();
                                 mMainActivity.startService(new Intent(mMainActivity,
@@ -277,7 +263,6 @@ public class MainObserverList extends Fragment implements OnDragListener {
 
                         @Override
                         public void run() {
-                            // TODO Auto-generated method stub
                             Toast.makeText(
                                     mContext,
                                     mContext.getString(R.string.stock_not_found) + ", "

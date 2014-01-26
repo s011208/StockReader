@@ -54,7 +54,6 @@ public class StockDataLoaderService extends Service implements StockLoaderCallba
 
             @Override
             public void onReceive(Context arg0, Intent arg1) {
-                // TODO Auto-generated method stub
                 String action = arg1.getAction();
                 if (MainAppSettingsPreference.INTENT_CHANGE_UPDATING_PERIOD_TIME.equals(action)) {
                     mUpdatingTimePeriod = arg1.getIntExtra(
@@ -93,11 +92,8 @@ public class StockDataLoaderService extends Service implements StockLoaderCallba
 
             @Override
             public void run() {
-                // TODO Auto-generated method stub
                 while (true && !sThreadStopSignal) {
                     if (misForcedPauseUpdating == false) {
-                        if (DEBUG)
-                            Log.d(TAG, "Stock reader is going to query data!");
                         parse();
                     } else {
                         if (DEBUG)
@@ -107,7 +103,6 @@ public class StockDataLoaderService extends Service implements StockLoaderCallba
                     try {
                         Thread.sleep(mUpdatingTimePeriod);
                     } catch (InterruptedException e) {
-                        // TODO Auto-generated catch block
                         e.printStackTrace();
                     }
                 }
@@ -135,14 +130,14 @@ public class StockDataLoaderService extends Service implements StockLoaderCallba
             // still loading
             return;
         }
+        if (DEBUG)
+            Log.d(TAG, "Stock reader is going to query data!");
         mLoader = new LoaderTask(mStockList, this);
-        // mLoader.setUrl("http://finance.google.com/finance/info?client=ig&q=NASDAQ:GOOG,NASDAQ:YHOO");
         mLoader.start();
     }
 
     @Override
     public IBinder onBind(Intent arg0) {
-        // TODO Auto-generated method stub
         return null;
     }
 

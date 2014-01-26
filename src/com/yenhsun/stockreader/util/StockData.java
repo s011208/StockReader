@@ -122,26 +122,22 @@ public class StockData implements Parcelable {
 
         @Override
         public StockData createFromParcel(Parcel source) {
-            // TODO Auto-generated method stub
             return new StockData(source);
         }
 
         @Override
         public StockData[] newArray(int size) {
-            // TODO Auto-generated method stub
             return new StockData[size];
         }
     };
 
     @Override
     public int describeContents() {
-        // TODO Auto-generated method stub
         return hashCode();
     }
 
     @Override
     public void writeToParcel(Parcel dest, int arg1) {
-        // TODO Auto-generated method stub
         final int N = mData.size();
         dest.writeInt(N);
         if (N > 0) {

@@ -56,25 +56,21 @@ public class StockListAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        // TODO Auto-generated method stub
         return mData.size();
     }
 
     @Override
     public Object getItem(int position) {
-        // TODO Auto-generated method stub
         return mData.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        // TODO Auto-generated method stub
         return position;
     }
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        // TODO Auto-generated method stub
         convertView = mInflater.inflate(R.layout.stock_adapter, null);
         final StockId data = mData.get(position);
         TextView t1 = (TextView) convertView.findViewById(R.id.main_observe_list_market);
@@ -98,7 +94,6 @@ public class StockListAdapter extends BaseAdapter {
 
             @Override
             public boolean onLongClick(View v) {
-                // TODO Auto-generated method stub
                 if (mIsDeleteMode) {
                     sDraggingPosition = position;
                     v.setVisibility(View.GONE);

@@ -35,7 +35,6 @@ public class YahooJsonLoader extends JsonLoader {
 
     @Override
     public ArrayList<JSONObject> parse(ArrayList<StockId> data) {
-        // TODO Auto-generated method stub
         ArrayList<JSONObject> rtn = new ArrayList<JSONObject>();
         for (StockId d : data) {
             ArrayList<String> rawData = readHttpData(UrlStringComposer.retriveYahooUrl(d),
@@ -56,7 +55,6 @@ public class YahooJsonLoader extends JsonLoader {
                     json.put(StockData.c_fix, 0);
                     rtn.add(json);
                 } catch (JSONException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -88,7 +86,6 @@ public class YahooJsonLoader extends JsonLoader {
                     json.put(StockData.c_fix, 0);
                     rtn.add(json);
                 } catch (JSONException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 } catch (Exception e) {
                     e.printStackTrace();
